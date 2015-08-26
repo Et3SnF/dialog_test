@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <!-- Define how you want the shape to be here -->
+
+    <item>
+
+        <shape android:shape="oval">
+
+            <!-- Cannot put transparent background on this. Ripple won't work -->
+
+            <solid android:color="?android:windowBackground"/>
+
+            <stroke
+                android:width="1dp"
+                android:color="@color/black_26"/>
+
+            <corners
+                android:bottomLeftRadius="36dp"
+                android:bottomRightRadius="36dp"
+                android:topLeftRadius="36dp"
+                android:topRightRadius="36dp"/>
+
+        </shape>
+
+    </item>
+
+</ripple>

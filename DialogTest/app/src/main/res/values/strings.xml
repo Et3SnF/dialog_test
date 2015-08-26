@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Dialog Test</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="fbc_dialog_title">Filter by Category</string>
+    <string name="btn_cancel_text">Cancel</string>
+    <string name="btn_ok_text">Ok</string>
+
+</resources>
