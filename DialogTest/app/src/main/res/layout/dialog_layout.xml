@@ -45,15 +45,9 @@
 
     </RelativeLayout>
 
-    <!--
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_custom_list"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:paddingLeft = "24dp"
-        android:paddingRight = "24dp"/>
-
-    -->
+        android:layout_height="200dp"/>
 
 </LinearLayout>

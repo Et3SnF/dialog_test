@@ -1,4 +1,4 @@
-package com.ngynstvn.android.dialogtest;
+package com.ngynstvn.android.dialogtest.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,16 +6,38 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ngynstvn.android.dialogtest.R;
+import com.ngynstvn.android.dialogtest.adapter.Adapter;
+import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperCallback;
+
 public class CustomDialog extends DialogFragment {
+
+    public interface ItemTouchHelperAdapter {
+        boolean onItemMove(int fromPosition, int toPosition);
+        void onItemDismiss(int position);
+    }
+
+    public interface ItemTouchHelperViewHolder {
+        void onItemSelected();
+        void onItemClear();
+    }
 
     private static final String TAG = "Test (" + CustomDialog.class.getSimpleName() + "): ";
 
     private Button btnAddCategory;
+    private RecyclerView recyclerView;
+    private Adapter adapter;
+    private ItemTouchHelper.Callback callback;
+    private ItemTouchHelper touchHelper;
 
     // Important single instantiation of this class
 
@@ -46,6 +68,9 @@ public class CustomDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
+        adapter = new Adapter();
+        callback = new ItemTouchHelperCallback(adapter);
+        touchHelper = new ItemTouchHelper(callback);
     }
 
     @Override
@@ -61,6 +86,11 @@ public class CustomDialog extends DialogFragment {
         // Inflate anything specifically in this lifecycle method
 
         btnAddCategory = (Button) view.findViewById(R.id.btn_add_category);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_custom_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        touchHelper.attachToRecyclerView(recyclerView);
 
         builder.setView(view)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -75,6 +105,13 @@ public class CustomDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.v(TAG, "Negative Button Clicked");
                         Toast.makeText(getActivity(), "Negative Button Clicked", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.v(TAG, "Reset Button Clicked");
+                        Toast.makeText(getActivity(), "Reset Button Clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -93,7 +130,9 @@ public class CustomDialog extends DialogFragment {
             public void onClick(View v) {
                 Log.v(TAG, "Add Category Button Clicked");
                 Toast.makeText(getActivity(), "Add Category Button Clicked", Toast.LENGTH_SHORT).show();
-                dismiss(); // To dismiss the dialog..really..use this if you need to.
+                dismiss();
+
+                // Open up a fragment to add a new category.
             }
         });
 
