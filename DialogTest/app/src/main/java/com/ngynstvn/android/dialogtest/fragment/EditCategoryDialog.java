@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import com.ngynstvn.android.dialogtest.R;
 
@@ -15,6 +16,8 @@ public class EditCategoryDialog extends DialogFragment {
     private static String TAG = "Test (" + EditCategoryDialog.class.getSimpleName() + "): ";
 
     private AlertDialog.Builder builder;
+    private AlertDialog alertDialog;
+    private EditText editText;
 
     // Important instance method with saved state
 
@@ -33,14 +36,17 @@ public class EditCategoryDialog extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         builder = new AlertDialog.Builder(getActivity(), R.style.MaterialAlertDialogStyle);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        Log.v(TAG, "onCreateDialog() called");
         View view = getActivity().getLayoutInflater().inflate(R.layout.category_input, null);
+
+        editText = (EditText) view.findViewById(R.id.et_category_input);
 
         builder.setTitle("Add Category")
                 .setView(view)
@@ -62,18 +68,26 @@ public class EditCategoryDialog extends DialogFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         Log.v(TAG, "onActivityCreated() called");
-
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
     public void onStart() {
         Log.v(TAG, "onStart() called");
         super.onStart();
-        // This is where the fragment stops at when I first load it.
+        alertDialog = builder.create();
+
+        if(alertDialog != null) {
+
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+        }
     }
 
     @Override
@@ -93,9 +107,6 @@ public class EditCategoryDialog extends DialogFragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.v(TAG, "onSaveInstanceState() called");
         super.onSaveInstanceState(outState);
-
-        // Called probably whenever I have another dialog and that I want to call to do something
-        // to update information here
     }
 
     @Override

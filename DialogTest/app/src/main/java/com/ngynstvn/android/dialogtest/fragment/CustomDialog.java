@@ -122,8 +122,7 @@ public class CustomDialog extends DialogFragment {
                 Log.v(TAG, "Add Category Button Clicked");
                 Toast.makeText(getActivity(), "Add Category Button Clicked", Toast.LENGTH_SHORT).show();
                 dismiss();
-
-                // Open up a fragment to add a new category.
+                showAddCategoryDialog();
             }
         });
 
@@ -177,5 +176,10 @@ public class CustomDialog extends DialogFragment {
     }
 
     // ---------------- //
+
+    void showAddCategoryDialog() {
+        AddCategoryDialog addCategoryDialog = AddCategoryDialog.newInstance(1);
+        addCategoryDialog.show(getFragmentManager(), "add_category");
+    }
 
 }

@@ -8,15 +8,22 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ngynstvn.android.dialogtest.R;
+import com.ngynstvn.android.dialogtest.UIUtils;
+import com.ngynstvn.android.dialogtest.application.DialogApplication;
+import com.ngynstvn.android.dialogtest.model.Category;
 
 public class AddCategoryDialog extends DialogFragment {
 
     private static final String TAG = "Test (" + AddCategoryDialog.class.getSimpleName() + "): ";
 
     private AlertDialog.Builder builder;
+    private AlertDialog alertDialog;
     private EditText editText;
 
     // Important instance method with saved state
@@ -38,17 +45,20 @@ public class AddCategoryDialog extends DialogFragment {
 
     @Override
     public void onAttach(Activity activity) {
+        Log.v(TAG, "onAttach() called");
         super.onAttach(activity);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         builder = new AlertDialog.Builder(getActivity(), R.style.MaterialAlertDialogStyle);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.v(TAG, "onCreateDialog() called");
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.category_input, null);
 
@@ -59,21 +69,26 @@ public class AddCategoryDialog extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String addCategoryInput = editText.getText().toString();
+                        Log.v(TAG, "Positive Button clicked");
+                        // Leave this blank. It is being handled somewhere else!
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.v(TAG, "Negative Button clicked");
+                        showCategoryDialog();
                     }
                 });
+
+        alertDialog = builder.create();
 
         return builder.create();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.v(TAG, "onActivityCreated() called");
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -81,7 +96,57 @@ public class AddCategoryDialog extends DialogFragment {
     public void onStart() {
         Log.v(TAG, "onStart() called");
         super.onStart();
-        // This is where the fragment stops at when I first load it.
+
+        // Overriding + button behavior
+
+        final AlertDialog alertDialog = (AlertDialog) getDialog();
+
+        if(alertDialog != null) {
+
+            editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            });
+
+            Button okButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Log.v(TAG, "Positive Button Clicked");
+
+                    boolean closeDialog = false;
+
+                    String value = editText.getText().toString();
+
+                    // Modify this to be database stuff later
+
+                    if(value.equalsIgnoreCase("")) {
+                        Toast.makeText(getActivity(), "Invalid entry. Please try again.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    for(Category category : DialogApplication.getSharedFakeData().getCategoryArrayList()) {
+                        if(value.equalsIgnoreCase(category.getCategoryName())) {
+                            Toast.makeText(getActivity(), value + " is already a category", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    DialogApplication.getSharedFakeData().getCategoryArrayList()
+                            .add(new Category(value, UIUtils.generateRandomColor(android.R.color.white)));
+                    closeDialog = true;
+
+                    if(closeDialog) {
+                        dismiss();
+                        showCategoryDialog();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -126,5 +191,9 @@ public class AddCategoryDialog extends DialogFragment {
 
     // ------------------------- //
 
+    void showCategoryDialog(){
+        CustomDialog customDialog = CustomDialog.newInstance(R.string.fbc_dialog_title);
+        customDialog.show(getFragmentManager(), "category_dialog");
+    }
 }
 

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.ngynstvn.android.dialogtest.R;
 import com.ngynstvn.android.dialogtest.UIUtils;
+import com.ngynstvn.android.dialogtest.application.DialogApplication;
+import com.ngynstvn.android.dialogtest.data.FakeData;
 import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperAdapter;
 import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperViewHolder;
 import com.ngynstvn.android.dialogtest.model.Category;
@@ -29,14 +31,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     // ----- Member Variables ----- //
 
-    private ArrayList<Category> categoryArrayList;
+    private FakeData fakeData = DialogApplication.getSharedFakeData();
 
     // ----- Constructor ----- //
 
     public Adapter() {
         Log.v(TAG, "CategoryAdapter object instantiated");
-        categoryArrayList = new ArrayList<Category>();
-        generateCategories(categoryArrayList);
     }
 
     // ----- CategoryAdapter Methods ----- //
@@ -46,7 +46,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
         // This is really important to place otherwise nothing will display! RecyclerView goes
         // through this method to count and then add the items!
 
-        return categoryArrayList.size();
+        return fakeData.getCategoryArrayList().size();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     @Override
     public void onBindViewHolder(AdapterViewHolder holder, int position) {
-        holder.updateViewHolder(categoryArrayList.get(position));
+        holder.updateViewHolder(fakeData.getCategoryArrayList().get(position));
     }
 
     // Generate fake categories for now
@@ -71,10 +71,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     }
 
-    public ArrayList<Category> getCategoryArrayList() {
-        return categoryArrayList;
-    }
-
     /**
      *
      * CustomDialog.ItemTouchHelperAdapter methods
@@ -85,7 +81,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     @Override
     public void onItemDismiss(int position) {
-        categoryArrayList.remove(position);
+        fakeData.getCategoryArrayList().remove(position);
         notifyItemRemoved(position); // this is important for adapter to be aware
     }
 
@@ -95,12 +91,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
     public boolean onItemMove(int fromPosition, int toPosition) {
         if(fromPosition < toPosition) {
             for(int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(categoryArrayList, i, i+1); // allows item to move down
+                Collections.swap(fakeData.getCategoryArrayList(), i, i+1); // allows item to move down
             }
         }
         else {
             for(int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(categoryArrayList, i, i -1); // allows item to move up
+                Collections.swap(fakeData.getCategoryArrayList(), i, i -1); // allows item to move up
             }
         }
 

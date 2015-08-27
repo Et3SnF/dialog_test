@@ -71,6 +71,5 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
-
     //  With this callback class ready, attach it.
 }
