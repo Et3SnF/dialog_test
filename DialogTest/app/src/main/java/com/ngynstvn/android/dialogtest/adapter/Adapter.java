@@ -1,7 +1,6 @@
 package com.ngynstvn.android.dialogtest.adapter;
 
 import android.annotation.TargetApi;
-import android.graphics.Color;
 import android.graphics.Outline;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -13,15 +12,16 @@ import android.view.ViewOutlineProvider;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.ngynstvn.android.dialogtest.model.Category;
-import com.ngynstvn.android.dialogtest.fragment.CustomDialog;
 import com.ngynstvn.android.dialogtest.R;
 import com.ngynstvn.android.dialogtest.UIUtils;
+import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperAdapter;
+import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperViewHolder;
+import com.ngynstvn.android.dialogtest.model.Category;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> implements CustomDialog.ItemTouchHelperAdapter {
+public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> implements ItemTouchHelperAdapter {
 
     // ----- Class Variables ----- //
 
@@ -71,6 +71,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     }
 
+    public ArrayList<Category> getCategoryArrayList() {
+        return categoryArrayList;
+    }
+
     /**
      *
      * CustomDialog.ItemTouchHelperAdapter methods
@@ -106,7 +110,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
     // CategoryAdapterViewHolder inner class
 
-    class AdapterViewHolder extends RecyclerView.ViewHolder implements CustomDialog.ItemTouchHelperViewHolder {
+    class AdapterViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
         // ----- Member variables ----- //
 
@@ -143,8 +147,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
                 categoryColor.setClipToOutline(true);
             }
 
-            // Might implement swipe to delete here...
-
         }
 
         // ----- Separate Methods ----- //
@@ -162,13 +164,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.argb(31, 0, 0, 0));
+            itemView.setBackgroundColor(0x1E000000);
         }
 
         @Override
         public void onItemClear() {
-            itemView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+            itemView.setBackgroundColor(0x00000000);
         }
+
     }
 
 }

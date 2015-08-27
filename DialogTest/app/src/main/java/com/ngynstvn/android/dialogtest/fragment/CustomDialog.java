@@ -21,16 +21,6 @@ import com.ngynstvn.android.dialogtest.helper.ItemTouchHelperCallback;
 
 public class CustomDialog extends DialogFragment {
 
-    public interface ItemTouchHelperAdapter {
-        boolean onItemMove(int fromPosition, int toPosition);
-        void onItemDismiss(int position);
-    }
-
-    public interface ItemTouchHelperViewHolder {
-        void onItemSelected();
-        void onItemClear();
-    }
-
     private static final String TAG = "Test (" + CustomDialog.class.getSimpleName() + "): ";
 
     private Button btnAddCategory;
@@ -62,6 +52,7 @@ public class CustomDialog extends DialogFragment {
     public void onAttach(Activity activity) {
         Log.v(TAG, "onAttach() called");
         super.onAttach(activity);
+        // Hmm...to attach or to not attach....
     }
 
     @Override
@@ -69,7 +60,7 @@ public class CustomDialog extends DialogFragment {
         Log.v(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         adapter = new Adapter();
-        callback = new ItemTouchHelperCallback(adapter);
+        callback = new ItemTouchHelperCallback(adapter, getActivity());
         touchHelper = new ItemTouchHelper(callback);
     }
 

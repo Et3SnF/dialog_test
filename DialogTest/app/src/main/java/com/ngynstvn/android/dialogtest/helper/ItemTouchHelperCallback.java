@@ -1,27 +1,30 @@
 package com.ngynstvn.android.dialogtest.helper;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.ngynstvn.android.dialogtest.fragment.CustomDialog;
-
-// This class is integrate a custom feedback action whenever we swipe to dismiss or drag an item.
+// This class allows the integration of a custom feedback action when swiping on a RecyclerView item
 // Must extend ItemTouchHelper.Callback to do this
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
-    private final CustomDialog.ItemTouchHelperAdapter itemTouchHelperAdapter;
+    private final ItemTouchHelperAdapter itemTouchHelperAdapter;
 
-    public ItemTouchHelperCallback(CustomDialog.ItemTouchHelperAdapter itemTouchHelperAdapter) {
+    private final Context context;
+
+    public ItemTouchHelperCallback(ItemTouchHelperAdapter itemTouchHelperAdapter, Context context) {
         this.itemTouchHelperAdapter = itemTouchHelperAdapter;
+        this.context = context;
     }
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if(actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            if(viewHolder instanceof CustomDialog.ItemTouchHelperViewHolder) {
-                CustomDialog.ItemTouchHelperViewHolder itemTouchHelperViewHolder =
-                        (CustomDialog.ItemTouchHelperViewHolder) viewHolder;
+            if(viewHolder instanceof ItemTouchHelperViewHolder) {
+                ItemTouchHelperViewHolder itemTouchHelperViewHolder =
+                        (ItemTouchHelperViewHolder) viewHolder;
                 itemTouchHelperViewHolder.onItemSelected();
             }
         }
@@ -31,9 +34,9 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
-        if(viewHolder instanceof CustomDialog.ItemTouchHelperViewHolder) {
-            CustomDialog.ItemTouchHelperViewHolder itemTouchHelperViewHolder =
-                    (CustomDialog.ItemTouchHelperViewHolder) viewHolder;
+        if(viewHolder instanceof ItemTouchHelperViewHolder) {
+            ItemTouchHelperViewHolder itemTouchHelperViewHolder =
+                    (ItemTouchHelperViewHolder) viewHolder;
             itemTouchHelperViewHolder.onItemClear();
         }
     }
@@ -58,6 +61,16 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         itemTouchHelperAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
+
+    // This overridden method is what will give that custom look!
+
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+
 
     //  With this callback class ready, attach it.
 }
