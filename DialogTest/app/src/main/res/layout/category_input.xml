@@ -16,8 +16,9 @@
         android:paddingTop="16dp"
         android:ems="10"
         android:layout_gravity="center_horizontal"
-        android:maxLength="24"
+        android:maxLength="16"
         android:singleLine="true"
-        android:hint="Name"/>
+        android:hint="Name"
+        android:ellipsize="end"/>
 
 </LinearLayout>

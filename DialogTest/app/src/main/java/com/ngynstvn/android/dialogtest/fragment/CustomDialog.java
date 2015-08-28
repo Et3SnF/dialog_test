@@ -77,6 +77,7 @@ public class CustomDialog extends DialogFragment {
         // Inflate anything specifically in this lifecycle method
 
         btnAddCategory = (Button) view.findViewById(R.id.btn_add_category);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_custom_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -111,21 +112,8 @@ public class CustomDialog extends DialogFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         Log.v(TAG, "onActivityCreated() called");
-
         super.onActivityCreated(savedInstanceState);
-
-        btnAddCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "Add Category Button Clicked");
-                Toast.makeText(getActivity(), "Add Category Button Clicked", Toast.LENGTH_SHORT).show();
-                dismiss();
-                showAddCategoryDialog();
-            }
-        });
-
     }
 
     @Override
@@ -133,6 +121,16 @@ public class CustomDialog extends DialogFragment {
         Log.v(TAG, "onStart() called");
         super.onStart();
         // This is where the fragment stops at when I first load it.
+
+        btnAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Add Category Button Clicked");
+                dismiss();
+                showAddCategoryDialog();
+            }
+        });
+
     }
 
     @Override
