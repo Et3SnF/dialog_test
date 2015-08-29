@@ -1,7 +1,9 @@
 package com.ngynstvn.android.dialogtest.adapter;
 
 import android.annotation.TargetApi;
+import android.graphics.Canvas;
 import android.graphics.Outline;
+import android.graphics.Paint;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -85,7 +87,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
     @Override
     public void onItemDismiss(int position) {
         fakeData.getCategoryArrayList().remove(position);
-        notifyItemRemoved(position); // this is important for adapter to be aware
+        notifyItemRemoved(position);
     }
 
     // For dragging items
@@ -134,8 +136,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
             filterCategory = (CheckBox) itemView.findViewById(R.id.cb_filter_category);
 
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.sl_category_item);
-            deleteButton = (Button) itemView.findViewById(R.id.btn_delete_category);
-            editButton = (Button) itemView.findViewById(R.id.btn_edit_category);
+            deleteButton = (Button) itemView.findViewById(R.id.btn_delete_icon);
+            editButton = (Button) itemView.findViewById(R.id.btn_edit_icon);
+
+            final Canvas c = new Canvas();
+            final Paint p = new Paint();
 
             // Need this check to check API version otherwise a RunTimeException occurs
 
@@ -166,39 +171,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
             swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout swipeLayout) {
-
+                    Log.v(TAG, "onStartOpen() called");
                 }
 
                 @Override
                 public void onOpen(SwipeLayout swipeLayout) {
-
+                    Log.v(TAG, "onOpen() called");
                 }
 
                 @Override
                 public void onStartClose(SwipeLayout swipeLayout) {
-
+                    Log.v(TAG, "onStartClose() called");
                 }
 
                 @Override
                 public void onClose(SwipeLayout swipeLayout) {
-
+                    Log.v(TAG, "onClose() called");
                 }
 
                 @Override
                 public void onUpdate(SwipeLayout swipeLayout, int i, int i1) {
-
+                    Log.v(TAG, "onUpdate() called");
                 }
 
                 @Override
                 public void onHandRelease(SwipeLayout swipeLayout, float v, float v1) {
-
+                    Log.v(TAG, "onHandRelease() called");
                 }
             });
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Delegate this to a controller at some point
+                    onItemDismiss(getAdapterPosition());
                 }
             });
 
@@ -206,6 +211,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
                 @Override
                 public void onClick(View v) {
                     // Delegate this to another controller at some point
+                    swipeLayout.close();
                 }
             });
 
@@ -226,6 +232,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
         @Override
         public void onItemSelected() {
+
+            if(swipeLayout.isSwipeEnabled()) {
+                return;
+            }
+
             itemView.setBackgroundColor(0x1E000000);
         }
 

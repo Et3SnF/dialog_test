@@ -82,7 +82,7 @@ public class CustomDialog extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-//        touchHelper.attachToRecyclerView(recyclerView);
+        touchHelper.attachToRecyclerView(recyclerView);
 
         builder.setView(view)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
