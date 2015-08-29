@@ -14,11 +14,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter itemTouchHelperAdapter;
 
-    private final Context context;
-
     public ItemTouchHelperCallback(ItemTouchHelperAdapter itemTouchHelperAdapter, Context context) {
         this.itemTouchHelperAdapter = itemTouchHelperAdapter;
-        this.context = context;
     }
 
     @Override
