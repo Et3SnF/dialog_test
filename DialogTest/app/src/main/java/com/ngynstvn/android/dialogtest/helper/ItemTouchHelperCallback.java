@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 // This class allows the integration of a custom feedback action when swiping on a RecyclerView item
 // Must extend ItemTouchHelper.Callback to do this
@@ -68,7 +69,16 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
+        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+            View view = viewHolder.itemView;
+
+            
+
+        }
+
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
     }
 
     //  With this callback class ready, attach it.
