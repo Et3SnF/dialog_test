@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.ngynstvn.android.dialogtest.R;
 import com.ngynstvn.android.dialogtest.UIUtils;
 import com.ngynstvn.android.dialogtest.application.DialogApplication;
@@ -114,6 +116,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
         private TextView categoryName;
         private CheckBox filterCategory;
 
+        private SwipeLayout swipeLayout;
+        private Button deleteButton;
+        private Button editButton;
+
+        private boolean isItemClickable = true;
+
         // Constructor
 
         public AdapterViewHolder(final View itemView) {
@@ -125,6 +133,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
             categoryColor = (TextView) itemView.findViewById(R.id.tv_category_color);
             categoryName = (TextView) itemView.findViewById(R.id.tv_category_name);
             filterCategory = (CheckBox) itemView.findViewById(R.id.cb_filter_category);
+
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.sl_category_item);
+            deleteButton = (Button) itemView.findViewById(R.id.btn_delete_category);
+            editButton = (Button) itemView.findViewById(R.id.btn_edit_category);
 
             // Need this check to check API version otherwise a RunTimeException occurs
 
@@ -142,6 +154,46 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> imp
 
                 categoryColor.setClipToOutline(true);
             }
+
+            // SwipeLayout material
+
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+
+            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onStartOpen(SwipeLayout swipeLayout) {
+                    itemView.setClickable(!isItemClickable);
+                    itemView.setLongClickable(!isItemClickable);
+                }
+
+                @Override
+                public void onOpen(SwipeLayout swipeLayout) {
+                    itemView.setClickable(!isItemClickable);
+                    itemView.setLongClickable(!isItemClickable);
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout swipeLayout) {
+                    itemView.setClickable(!isItemClickable);
+                    itemView.setLongClickable(!isItemClickable);
+                }
+
+                @Override
+                public void onClose(SwipeLayout swipeLayout) {
+                    itemView.setLongClickable(isItemClickable);
+                    itemView.setClickable(isItemClickable);
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout swipeLayout, int i, int i1) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout swipeLayout, float v, float v1) {
+
+                }
+            });
 
         }
 
